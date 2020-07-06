@@ -1307,7 +1307,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ffa74e;
+  background: #0d58cd;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -6055,7 +6055,7 @@ a.github-corner {
   top: 0;
   bottom: 0;
   left: 0;
-  background-image: url("https://blog.dbnuo.com/images/dot.gif");
+  background-image: url("../images/dot.gif");
 }
 .sidebar:after {
   content: "";

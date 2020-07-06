@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://myblog.ddos-sec.cn/"/>
-  <updated>2020-07-05T16:37:53.949Z</updated>
+  <updated>2020-07-06T09:03:04.862Z</updated>
   <id>http://myblog.ddos-sec.cn/</id>
   
   <author>
@@ -15,6 +15,52 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>聚合工程</title>
+    <link href="http://myblog.ddos-sec.cn/2020/07/06/%E8%81%9A%E5%90%88%E5%B7%A5%E7%A8%8B/"/>
+    <id>http://myblog.ddos-sec.cn/2020/07/06/%E8%81%9A%E5%90%88%E5%B7%A5%E7%A8%8B/</id>
+    <published>2020-07-06T15:18:54.000Z</published>
+    <updated>2020-07-06T09:03:04.862Z</updated>
+    
+    <summary type="html">
+    
+      &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+
+&lt;h1 id=&quot;聚合工程&quot;&gt;&lt;a href=&quot;#聚合工程&quot; class=&quot;headerlink&quot; title=&quot;聚合工程&quot;&gt;&lt;/a&gt;聚合工程&lt;/h1&gt;&lt;p&gt;所谓的聚合工程，实际上也就是多模块项目。在一个比较大的互联网项目中，项目需要拆分成多个模块进行开发，比如订单模块、VIP 模块、支付模块、内容管理模块、CMS、CRM 等等。这种拆分方式，实际上更接近于微服务的思想。在一个模块中，还可以继续进行拆分，例如分成 dao、service、controller 等&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="Maven" scheme="http://myblog.ddos-sec.cn/tags/Maven/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Maven私服</title>
+    <link href="http://myblog.ddos-sec.cn/2020/07/06/Maven%E7%A7%81%E6%9C%8D/"/>
+    <id>http://myblog.ddos-sec.cn/2020/07/06/Maven%E7%A7%81%E6%9C%8D/</id>
+    <published>2020-07-06T12:34:04.000Z</published>
+    <updated>2020-07-06T08:18:37.292Z</updated>
+    
+    <summary type="html">
+    
+      &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+
+&lt;h1 id=&quot;Maven私服&quot;&gt;&lt;a href=&quot;#Maven私服&quot; class=&quot;headerlink&quot; title=&quot;Maven私服&quot;&gt;&lt;/a&gt;Maven私服&lt;/h1&gt;&lt;p&gt;Maven 仓库管理也叫 Maven 私服或者代理仓库。使用 Maven 私服有两个目的&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;私服是一个介于开发者和远程仓库之间的代理&lt;/li&gt;
+&lt;li&gt;私服可以用来部署公司自己的 jar&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="Maven" scheme="http://myblog.ddos-sec.cn/tags/Maven/"/>
+    
+  </entry>
   
   <entry>
     <title>Maven依赖管理</title>
@@ -361,44 +407,6 @@
     <id>http://myblog.ddos-sec.cn/2020/06/26/%E5%AD%97%E8%8A%82%E6%B5%81/</id>
     <published>2020-06-26T14:22:41.000Z</published>
     <updated>2020-06-26T13:56:23.418Z</updated>
-    
-    <summary type="html">
-    
-      &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
-    
-    </summary>
-    
-    
-      <category term="Java核心语法-IO流与多线程" scheme="http://myblog.ddos-sec.cn/categories/Java%E6%A0%B8%E5%BF%83%E8%AF%AD%E6%B3%95-IO%E6%B5%81%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>IO流</title>
-    <link href="http://myblog.ddos-sec.cn/2020/06/26/IO%E6%B5%81/"/>
-    <id>http://myblog.ddos-sec.cn/2020/06/26/IO%E6%B5%81/</id>
-    <published>2020-06-26T13:26:02.000Z</published>
-    <updated>2020-06-26T06:18:56.484Z</updated>
-    
-    <summary type="html">
-    
-      &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
-    
-    </summary>
-    
-    
-      <category term="Java核心语法-IO流与多线程" scheme="http://myblog.ddos-sec.cn/categories/Java%E6%A0%B8%E5%BF%83%E8%AF%AD%E6%B3%95-IO%E6%B5%81%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>递归</title>
-    <link href="http://myblog.ddos-sec.cn/2020/06/26/%E9%80%92%E5%BD%92/"/>
-    <id>http://myblog.ddos-sec.cn/2020/06/26/%E9%80%92%E5%BD%92/</id>
-    <published>2020-06-26T13:09:08.000Z</published>
-    <updated>2020-06-26T05:26:27.122Z</updated>
     
     <summary type="html">
     
