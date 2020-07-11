@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://myblog.ddos-sec.cn/"/>
-  <updated>2020-07-06T09:03:04.862Z</updated>
+  <updated>2020-07-11T06:59:09.591Z</updated>
   <id>http://myblog.ddos-sec.cn/</id>
   
   <author>
@@ -15,6 +15,117 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>申请友链</title>
+    <link href="http://myblog.ddos-sec.cn/2020/07/11/%E7%94%B3%E8%AF%B7%E5%8F%8B%E9%93%BE/"/>
+    <id>http://myblog.ddos-sec.cn/2020/07/11/%E7%94%B3%E8%AF%B7%E5%8F%8B%E9%93%BE/</id>
+    <published>2020-07-11T14:59:09.000Z</published>
+    <updated>2020-07-11T06:59:09.591Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL-小表驱动大表</title>
+    <link href="http://myblog.ddos-sec.cn/2020/07/10/MySQL-%E5%B0%8F%E8%A1%A8%E9%A9%B1%E5%8A%A8%E5%A4%A7%E8%A1%A8/"/>
+    <id>http://myblog.ddos-sec.cn/2020/07/10/MySQL-%E5%B0%8F%E8%A1%A8%E9%A9%B1%E5%8A%A8%E5%A4%A7%E8%A1%A8/</id>
+    <published>2020-07-09T16:07:37.000Z</published>
+    <updated>2020-07-09T08:41:19.954Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+
+&lt;h1 id=&quot;小表驱动大表&quot;&gt;&lt;a href=&quot;#小表驱动大表&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="MySQL" scheme="http://myblog.ddos-sec.cn/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL-索引相关面试题</title>
+    <link href="http://myblog.ddos-sec.cn/2020/07/09/MySQL-%E7%B4%A2%E5%BC%95%E7%9B%B8%E5%85%B3%E9%9D%A2%E8%AF%95%E9%A2%98/"/>
+    <id>http://myblog.ddos-sec.cn/2020/07/09/MySQL-%E7%B4%A2%E5%BC%95%E7%9B%B8%E5%85%B3%E9%9D%A2%E8%AF%95%E9%A2%98/</id>
+    <published>2020-07-09T10:45:59.000Z</published>
+    <updated>2020-07-09T03:08:50.857Z</updated>
+    
+    <summary type="html">
+    
+      &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+
+&lt;h1 id=&quot;说出以下语法使用索引的情况&quot;&gt;&lt;a href=&quot;#说出以下语法使用索引的情况&quot; class=&quot;headerlink&quot; title=&quot;说出以下语法使用索引的情况&quot;&gt;&lt;/a&gt;说出以下语法使用索引的情况&lt;/h1&gt;&lt;p&gt;假设建立复合索引 (a、b、c)，请说出以下条件是否使用到了索引及使用情况&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="MySQL" scheme="http://myblog.ddos-sec.cn/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL-排序与分组优化</title>
+    <link href="http://myblog.ddos-sec.cn/2020/07/09/MySQL-%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%88%86%E7%BB%84%E4%BC%98%E5%8C%96/"/>
+    <id>http://myblog.ddos-sec.cn/2020/07/09/MySQL-%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%88%86%E7%BB%84%E4%BC%98%E5%8C%96/</id>
+    <published>2020-07-09T10:13:42.000Z</published>
+    <updated>2020-07-09T02:41:53.397Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+
+&lt;h1 id=&quot;在使用-order-by-时，经常出现-Using-filesort&quot;&gt;&lt;a href=&quot;#在使用-order-by-时，经常出现-Using-filesort&quot;
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="MySQL" scheme="http://myblog.ddos-sec.cn/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL-索引失效</title>
+    <link href="http://myblog.ddos-sec.cn/2020/07/09/MySQL-%E7%B4%A2%E5%BC%95%E5%A4%B1%E6%95%88/"/>
+    <id>http://myblog.ddos-sec.cn/2020/07/09/MySQL-%E7%B4%A2%E5%BC%95%E5%A4%B1%E6%95%88/</id>
+    <published>2020-07-09T09:24:54.000Z</published>
+    <updated>2020-07-09T02:03:53.649Z</updated>
+    
+    <summary type="html">
+    
+      &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+
+&lt;h1 id=&quot;全值匹配-最好&quot;&gt;&lt;a href=&quot;#全值匹配-最好&quot; class=&quot;headerlink&quot; title=&quot;全值匹配(最好)&quot;&gt;&lt;/a&gt;全值匹配(最好)&lt;/h1&gt;&lt;p&gt;建立复合索引 (name,age,salary)，使用到了一个&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="MySQL" scheme="http://myblog.ddos-sec.cn/tags/MySQL/"/>
+    
+  </entry>
   
   <entry>
     <title>聚合工程</title>
@@ -312,101 +423,6 @@
     <id>http://myblog.ddos-sec.cn/2020/06/29/%E5%BA%8F%E5%88%97%E5%8C%96/</id>
     <published>2020-06-28T23:09:13.000Z</published>
     <updated>2020-06-29T03:40:58.217Z</updated>
-    
-    <summary type="html">
-    
-      &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
-    
-    </summary>
-    
-    
-      <category term="Java核心语法-IO流与多线程" scheme="http://myblog.ddos-sec.cn/categories/Java%E6%A0%B8%E5%BF%83%E8%AF%AD%E6%B3%95-IO%E6%B5%81%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>转换流</title>
-    <link href="http://myblog.ddos-sec.cn/2020/06/29/%E8%BD%AC%E6%8D%A2%E6%B5%81/"/>
-    <id>http://myblog.ddos-sec.cn/2020/06/29/%E8%BD%AC%E6%8D%A2%E6%B5%81/</id>
-    <published>2020-06-28T22:37:54.000Z</published>
-    <updated>2020-06-28T15:08:36.760Z</updated>
-    
-    <summary type="html">
-    
-      &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
-    
-    </summary>
-    
-    
-      <category term="Java核心语法-IO流与多线程" scheme="http://myblog.ddos-sec.cn/categories/Java%E6%A0%B8%E5%BF%83%E8%AF%AD%E6%B3%95-IO%E6%B5%81%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>缓冲流</title>
-    <link href="http://myblog.ddos-sec.cn/2020/06/29/%E7%BC%93%E5%86%B2%E6%B5%81/"/>
-    <id>http://myblog.ddos-sec.cn/2020/06/29/%E7%BC%93%E5%86%B2%E6%B5%81/</id>
-    <published>2020-06-28T22:24:10.000Z</published>
-    <updated>2020-06-28T14:37:34.410Z</updated>
-    
-    <summary type="html">
-    
-      &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
-    
-    </summary>
-    
-    
-      <category term="Java核心语法-IO流与多线程" scheme="http://myblog.ddos-sec.cn/categories/Java%E6%A0%B8%E5%BF%83%E8%AF%AD%E6%B3%95-IO%E6%B5%81%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>异常处理</title>
-    <link href="http://myblog.ddos-sec.cn/2020/06/29/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/"/>
-    <id>http://myblog.ddos-sec.cn/2020/06/29/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/</id>
-    <published>2020-06-28T22:17:27.000Z</published>
-    <updated>2020-06-29T11:18:38.666Z</updated>
-    
-    <summary type="html">
-    
-      &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
-    
-    </summary>
-    
-    
-      <category term="Java核心语法-IO流与多线程" scheme="http://myblog.ddos-sec.cn/categories/Java%E6%A0%B8%E5%BF%83%E8%AF%AD%E6%B3%95-IO%E6%B5%81%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>字符流</title>
-    <link href="http://myblog.ddos-sec.cn/2020/06/27/%E5%AD%97%E7%AC%A6%E6%B5%81/"/>
-    <id>http://myblog.ddos-sec.cn/2020/06/27/%E5%AD%97%E7%AC%A6%E6%B5%81/</id>
-    <published>2020-06-26T20:38:07.000Z</published>
-    <updated>2020-06-28T11:50:20.795Z</updated>
-    
-    <summary type="html">
-    
-      &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
-    
-    </summary>
-    
-    
-      <category term="Java核心语法-IO流与多线程" scheme="http://myblog.ddos-sec.cn/categories/Java%E6%A0%B8%E5%BF%83%E8%AF%AD%E6%B3%95-IO%E6%B5%81%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>字节流</title>
-    <link href="http://myblog.ddos-sec.cn/2020/06/26/%E5%AD%97%E8%8A%82%E6%B5%81/"/>
-    <id>http://myblog.ddos-sec.cn/2020/06/26/%E5%AD%97%E8%8A%82%E6%B5%81/</id>
-    <published>2020-06-26T14:22:41.000Z</published>
-    <updated>2020-06-26T13:56:23.418Z</updated>
     
     <summary type="html">
     
