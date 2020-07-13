@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://myblog.ddos-sec.cn/"/>
-  <updated>2020-07-11T06:59:09.591Z</updated>
+  <updated>2020-07-13T14:47:38.395Z</updated>
   <id>http://myblog.ddos-sec.cn/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MySQL-锁</title>
+    <link href="http://myblog.ddos-sec.cn/2020/07/14/MySQL-%E9%94%81/"/>
+    <id>http://myblog.ddos-sec.cn/2020/07/14/MySQL-%E9%94%81/</id>
+    <published>2020-07-13T18:03:55.000Z</published>
+    <updated>2020-07-13T14:47:38.395Z</updated>
+    
+    <summary type="html">
+    
+      &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+
+&lt;h1 id=&quot;概念&quot;&gt;&lt;a href=&quot;#概念&quot; class=&quot;headerlink&quot; title=&quot;概念&quot;&gt;&lt;/a&gt;概念&lt;/h1&gt;&lt;p&gt;锁，在现实生活中是为我们想要隐藏于外界所使用的一种工具，在计算机中，是协调多个进程或线程并发访问某一资源的一种机制，在数据库当中，除了传统的计算资源（CPU、RAM、I/O等等）的争用之外，数据也是一种供许多用户共享访问的资源，如何保证数据并发访问的一致性、有效性，是所有数据库必须解决的一个问题，锁的冲突也是影响数据库并发访问性能的一个重要因素&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="MySQL" scheme="http://myblog.ddos-sec.cn/tags/MySQL/"/>
+    
+  </entry>
   
   <entry>
     <title>申请友链</title>
@@ -390,25 +411,6 @@
     <id>http://myblog.ddos-sec.cn/2020/06/30/%E6%89%93%E5%8D%B0%E6%B5%81/</id>
     <published>2020-06-30T09:45:17.000Z</published>
     <updated>2020-06-30T01:55:22.591Z</updated>
-    
-    <summary type="html">
-    
-      &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
-    
-    </summary>
-    
-    
-      <category term="Java核心语法-IO流与多线程" scheme="http://myblog.ddos-sec.cn/categories/Java%E6%A0%B8%E5%BF%83%E8%AF%AD%E6%B3%95-IO%E6%B5%81%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>序列化</title>
-    <link href="http://myblog.ddos-sec.cn/2020/06/29/%E5%BA%8F%E5%88%97%E5%8C%96/"/>
-    <id>http://myblog.ddos-sec.cn/2020/06/29/%E5%BA%8F%E5%88%97%E5%8C%96/</id>
-    <published>2020-06-28T23:09:13.000Z</published>
-    <updated>2020-06-29T03:40:58.217Z</updated>
     
     <summary type="html">
     

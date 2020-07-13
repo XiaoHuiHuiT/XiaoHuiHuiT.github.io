@@ -1,6 +1,216 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>MySQL-锁</title>
+    <url>/2020/07/14/MySQL-%E9%94%81/</url>
+    <content><![CDATA[<meta name="referrer" content="no-referrer">
+
+<h1 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h1><p>锁，在现实生活中是为我们想要隐藏于外界所使用的一种工具，在计算机中，是协调多个进程或线程并发访问某一资源的一种机制，在数据库当中，除了传统的计算资源（CPU、RAM、I/O等等）的争用之外，数据也是一种供许多用户共享访问的资源，如何保证数据并发访问的一致性、有效性，是所有数据库必须解决的一个问题，锁的冲突也是影响数据库并发访问性能的一个重要因素</p>
+<a id="more"></a>
+
+<h1 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h1><p>在购买商品时, 商品库存只有 1 个时，两个人同时买时, 谁买到的问题，会用到事务, 先从库存表中取出物品的数据, 然后插入订单，付款后，插入付款表信息，更新商品的数量, 在这个过程中, 使用锁可以对有限的资源进行保护，解决隔离和并发的矛盾</p>
+<h1 id="锁分类"><a href="#锁分类" class="headerlink" title="锁分类"></a>锁分类</h1><h2 id="按操作分"><a href="#按操作分" class="headerlink" title="按操作分"></a>按操作分</h2><ul>
+<li><p>读锁(共享锁)：针对同一份数据，多个读取操作可以同时进行而不互相影响</p>
+</li>
+<li><p>写锁(排它锁)：当前写操作没有完成前，会阻断其他写锁和读锁</p>
+</li>
+</ul>
+<h2 id="按粒度分"><a href="#按粒度分" class="headerlink" title="按粒度分"></a>按粒度分</h2><ul>
+<li>表锁</li>
+<li>行锁</li>
+<li>页锁</li>
+</ul>
+<h1 id="表锁"><a href="#表锁" class="headerlink" title="表锁"></a>表锁</h1><p>偏向 MYISAM 存储引擎，开销小，加锁快，无死锁，锁定粒度大，发生锁冲突的概率最高，并发最底，整张表就只能一个人使用</p>
+<h2 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h2><p>1.建立一张Myisam引擎的表</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`locktest`</span> (</span><br><span class="line">	<span class="string">`id`</span> <span class="built_in">INT</span> (<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">	<span class="string">`name`</span> <span class="built_in">VARCHAR</span> (<span class="number">255</span>) <span class="keyword">DEFAULT</span> <span class="literal">NULL</span>,</span><br><span class="line">	PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span> = MyISAM AUTO_INCREMENT = <span class="number">6</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span> = utf8;</span><br></pre></td></tr></table></figure>
+
+<p>2.查看表有没有被锁过</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> <span class="keyword">OPEN</span> <span class="keyword">TABLES</span>;</span><br></pre></td></tr></table></figure>
+
+<p>3.对表加锁</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">LOCK</span> <span class="keyword">TABLE</span> locktest <span class="keyword">READ</span>,</span><br><span class="line"> locktest2 WRITE;</span><br></pre></td></tr></table></figure>
+
+<p>4.对表进行解锁</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">UNLOCK</span> <span class="keyword">TABLES</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="读写锁对操作和性能产生哪些影响"><a href="#读写锁对操作和性能产生哪些影响" class="headerlink" title="读写锁对操作和性能产生哪些影响"></a>读写锁对操作和性能产生哪些影响</h2><p>1.对 locktest 添加读锁 lock table locktest read;(共享)</p>
+<p>当前连接</p>
+<table>
+<thead>
+<tr>
+<th align="center">是否可以查看自己</th>
+<th align="center">可以</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">是否可以更新</td>
+<td align="center">不可以</td>
+</tr>
+<tr>
+<td align="center">能不能读别的表</td>
+<td align="center">不可以，当前表还没有解锁,不能放下当前, 操作别的内容</td>
+</tr>
+</tbody></table>
+<p>另一个连接</p>
+<table>
+<thead>
+<tr>
+<th align="center">是否可以查看</th>
+<th align="center">可以</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">是否可以更新</td>
+<td align="center">当更新时，处理阻塞状态，等待解锁后，才能进行更新</td>
+</tr>
+<tr>
+<td align="center">能不能读别的表</td>
+<td align="center">可以</td>
+</tr>
+</tbody></table>
+<p>2.对 locktest 添加写锁 lock table locktest write;(排它)</p>
+<p>当前连接</p>
+<table>
+<thead>
+<tr>
+<th align="center">能否读自己锁过的表</th>
+<th align="center">可以</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">能否改自己锁过的表</td>
+<td align="center">可以</td>
+</tr>
+<tr>
+<td align="center">能否读取别的表</td>
+<td align="center">不可以</td>
+</tr>
+</tbody></table>
+<p>另一个连接</p>
+<table>
+<thead>
+<tr>
+<th align="center">能否没有加过锁的表</th>
+<th align="center">可以</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">能否对被锁过的表进行操作</td>
+<td align="center">阻塞，等待解锁时，能查到</td>
+</tr>
+</tbody></table>
+<h2 id="表锁分析"><a href="#表锁分析" class="headerlink" title="表锁分析"></a>表锁分析</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> <span class="keyword">STATUS</span> <span class="keyword">LIKE</span> <span class="string">'table%'</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Table_locks_immediate：产生表级锁定的次数，表示可以立即获取锁的查询次数</li>
+<li>Table_locks_waited：出现表级锁定争用而发生等待的次数</li>
+</ul>
+<p>Myisam 的读写锁调度是写优，这也是 myisam 不适合做写为主表的引擎，因为写锁后，其它线程不能做任何操作，大量更新会使用查询很难得到锁，从而造成永久阻塞</p>
+<p><strong>淘宝</strong></p>
+<p>买家库，偏向读取</p>
+<p>卖家库，更多偏向写</p>
+<h1 id="行锁"><a href="#行锁" class="headerlink" title="行锁"></a>行锁</h1><p>偏向 InnoDB 存储引擎，开销大，加锁慢，会出现死锁，锁定粒度最小，发生锁冲突的概率最底，并发度也最高，InnoDB 与 MyISAM 的最大不同点：一是支持事务，二是采用了行级锁</p>
+<h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><p>ACID属性</p>
+<ul>
+<li>原子性（Atomicity）原子性是指事务包含的所有操作要么全部成功，要么全部失败回滚。</li>
+<li>一致性（Consistency）一致性是指事务必须使数据库从一个一致性状态变换到另一个一致性状态，也就是说一个事务执行之前和执行之后都必须处于一致性状态。让数据保持一定上的合理，一个商品出库时，仓库商品数量减 1，对应用户的购物车中商品加 1。</li>
+<li>隔离性（Isolation）隔离性是当多个用户并发访问数据库时，比如操作同一张表时，数据库为每一个用户开启的事务，不能被其他事务的操作所干扰，多个并发事务之间要相互隔离。</li>
+<li>持久性（Durability）持久性是指一个事务一旦被提交了，就不能再回滚了，已经把数据保存到数据库当中了。</li>
+</ul>
+<p><strong>并发事务处理带来的问题</strong></p>
+<p><strong>更新丢失</strong>：两个或多个事务选择同一行，然后基于最初选定的值更新该行时，由于每个事务都不知道其它事务的存在，就会发生丢失更新问题，最后的更新覆盖了其它事务所做的更新</p>
+<p><strong>脏读</strong>：老板要给程序员发工资，程序员的工资是 3.6 万/月。但是发工资时老板不小心按错了数字，按成 3.9 万/月，该钱已经打到程序员的户口，但是事务还没有提交，就在这时，程序员去查看自己这个月的工资，发现比往常多了 3 千元，以为涨工资了非常高兴。但是老板及时发现了不对，马上回滚差点就提交了的事务，将数字改成 3.6 万再提交，实际程序员这个月的工资还是 3.6 万，但是程序员看到的是 3.9 万。他看到的是老板还没提交事务时的数据。这就是脏读。<strong>事务 A 读到了事务 B 已修改，但尚未提交的数据</strong></p>
+<p>解决办法，Read committed！读提交，能解决脏读问题</p>
+<p><strong>不可重复读</strong>：程序员拿着工资卡（卡里当然是只有 3.6 万），当他买单时（程序员事务开启），收费系统事先检测到他的卡里有 3.6 万，就在这个时候！！程序员的妻子要把钱全部转出充当家用，并提交。当收费系统准备扣款时，再检测卡里的金额，发现已经没钱了。程序员就会很郁闷，明明卡里是有钱的…，一个事务范围内两个相同的查询却返回了不同数据，这就是不可重复读，<strong>事务 A 读取到了事务 B 已经提交的修改数据</strong></p>
+<p>解决办法，Repeatable read</p>
+<p><strong>重复读</strong>：程序员拿着工资卡（卡里还是有 3.6 万），当他买时（事务开启，不允许其他事务的 UPDATE 修改操作），收费系统事先检测到他的卡里有 3.6 万。这个时候他的妻子不能转出金额了。接下来收费系统就可以扣款了。</p>
+<p><strong>幻读</strong>：程序员某一天去消费，花了 2 千元，然后他的妻子去查看他今天的消费记录（妻子事务开启），看到确实是花了 2 千元，就在这个时候，程序员花了 1 万买了一部电脑，即新增 INSERT 了一条消费记录，并提交。当妻子打印程序员的消费记录清单时（妻子事务提交），发现花了 1.2 万元，似乎出现了幻觉，这就是幻读。</p>
+<p>解决办法，Serializable 但是这种事务隔离级别效率低下，比较耗数据库性能，一般不使用。</p>
+<h2 id="对应关系"><a href="#对应关系" class="headerlink" title="对应关系"></a>对应关系</h2><table>
+<thead>
+<tr>
+<th align="center"><strong>事务隔离级别</strong></th>
+<th align="center"><strong>脏读</strong></th>
+<th align="center"><strong>不可重复读</strong></th>
+<th align="center"><strong>幻读</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">读未提交（read-uncommitted）</td>
+<td align="center">是</td>
+<td align="center">是</td>
+<td align="center">是</td>
+</tr>
+<tr>
+<td align="center">不可重复读（read-committed）</td>
+<td align="center">否</td>
+<td align="center">是</td>
+<td align="center">是</td>
+</tr>
+<tr>
+<td align="center">可重复读（repeatable-read）</td>
+<td align="center">否</td>
+<td align="center">否</td>
+<td align="center">是</td>
+</tr>
+<tr>
+<td align="center">串行化（serializable）</td>
+<td align="center">否</td>
+<td align="center">否</td>
+<td align="center">否</td>
+</tr>
+</tbody></table>
+<p>事务隔离级别</p>
+<ul>
+<li>Read uncommitted：就是一个事务可以读取另一个未提交事务的数据</li>
+<li>Read committed：一个事务要等另一个事务提交后才能读取数据</li>
+<li>Repeatable read：就是在开始读取数据（事务开启）时，不再允许修改操作</li>
+<li>Serializable：在该级别下，事务串行化顺序执行，可以避免脏读、不可重复读与幻读</li>
+</ul>
+<p>查看隔离级别</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> @@<span class="keyword">GLOBAL</span> .transaction_isolation ,@@transaction_isolation;</span><br></pre></td></tr></table></figure>
+
+<p>设置隔离级别</p>
+<ul>
+<li>全局的</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> <span class="keyword">TRANSACTION</span> <span class="keyword">ISOLATION</span> <span class="keyword">LEVEL</span> <span class="keyword">READ</span> COMMITTED;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>当前会话</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SET</span> <span class="keyword">SESSION</span> <span class="keyword">TRANSACTION</span> <span class="keyword">ISOLATION</span> <span class="keyword">LEVEL</span> <span class="keyword">READ</span> COMMITTED;</span><br></pre></td></tr></table></figure>
+
+<h2 id="示例-1"><a href="#示例-1" class="headerlink" title="示例"></a>示例</h2><ul>
+<li>演示行锁</li>
+</ul>
+<p>5.5 以后，默认后，事务会自动提交，由于演示，开两个连接都关闭自动提交</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SET</span> autocommit = <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+
+<p>做以下操作，执行更新操作，自己可以查看到更新的内容，连接 2 看不到更新的内容，只有 <code>commit</code> 后，才能看到更新的内容，连接 1 执行更新操作，连接 2 也执行更新操作，更新同一条记录，连接 1 没有提交事务时，连接 2 更新处于阻塞状态，当 commit 时，连接 2 才会继续执行，连接 2 更新也要 commit，连接 1 和连接 2 同时更新数据，但更新的不是同一条记录，<code>不会影响</code></p>
+<h2 id="索引失效行锁变表锁"><a href="#索引失效行锁变表锁" class="headerlink" title="索引失效行锁变表锁"></a>索引失效行锁变表锁</h2><p>使用 varchar 类型时，没有添加引号，导致索引失效，就会造成行锁变表锁，另一个连接更新数据时，会造成阻塞</p>
+<h2 id="间隙锁"><a href="#间隙锁" class="headerlink" title="间隙锁"></a>间隙锁</h2><p>当我们使用范围条件，而不是相等条件检索数据，并请求共享或排它锁时，InnoDB 会给符合条件的已有数据记录的索引项加锁，对于键值在条件范围内但并不存在的记录叫做 <code>间隙</code>，InnoDB 也会对这个 <code>间隙</code> 加锁，这种锁机制，就是所谓的间隙锁</p>
+<p>如何锁定一行数据</p>
+<p>在查询之后添加 for update，其它操作会被阻塞，直到锁定的行提交 commit</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> <span class="keyword">STATUS</span> <span class="keyword">LIKE</span> <span class="string">'innodb_row_lock%'</span>;</span><br></pre></td></tr></table></figure>
+
+<h1 id="悲观锁"><a href="#悲观锁" class="headerlink" title="悲观锁"></a>悲观锁</h1><p>就是很悲观，它对于数据被外界修改持保守态度，认为数据随时会修改，所以整个数据处理中需要将数据加锁。悲观锁一般都是依靠关系数据库提供的锁机制，事实上关系数据库中的行锁，表锁不论是读写锁都是悲观锁</p>
+<h1 id="乐观锁"><a href="#乐观锁" class="headerlink" title="乐观锁"></a>乐观锁</h1><p>顾名思义，就是很乐观，每次自己操作数据的时候认为没有人回来修改它，所以不去加锁，但是在更新的时候会去判断在此期间数据有没有被修改，需要用户自己去实现，不会发生并发抢占资源，只有在提交操作的时候检查是否违反数据完整性</p>
+<p><strong>为什么要使用乐观锁呢？</strong></p>
+<p>对于读操作远多于写操作的时候，大多数都是读取，这时候一个更新操作加锁会阻塞所有读取，降低了吞吐量。最后还要释放锁，锁是需要一些开销的，我们只要想办法解决极少量的更新操作的同步问题。换句话说，如果是读写比例差距不是非常大或者你的系统没有响应不及时，吞吐量瓶颈问题，那就不要去使用乐观锁，它增加了复杂度，也带来了额外的风险。</p>
+<p><strong>乐观锁的实现方式</strong></p>
+<p>版本号</p>
+<p>就是给数据增加一个版本标识，在数据库上就是表中增加一个 version 字段，每次更新把这个字段加 1，读取数据的时候把 version 读出来，更新的时候比较 version，如果还是开始读取的 version 就可以更新了，如果现在的 version 比老的version 大，说明有其他事务更新了该数据，并增加了版本号，这时候得到一个无法更新的通知，用户自行根据这个通知来决定怎么处理，比如重新开始一遍。</p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="https://img2020.cnblogs.com/blog/1871532/202007/1871532-20200713224216306-394485581.png" alt></p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="https://img2020.cnblogs.com/blog/1871532/202007/1871532-20200713224326030-1268016680.png" alt></p>
+<p>时间戳</p>
+<p>和版本号基本一样，只是通过时间戳来判断而已，注意时间戳要使用数据库服务器的时间戳不能是业务系统的时间，同样是在需要乐观锁控制的 table 中增加一个字段，名称无所谓，字段类型使用时间戳（timestamp）, 和上面的 version 类似，也是在更新提交的时候检查当前数据库中数据的时间戳和自己更新前取到的时间戳进行对比，如果一致则OK，否则就是版本冲突。</p>
+]]></content>
+      <tags>
+        <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>申请友链</title>
     <url>/2020/07/11/%E7%94%B3%E8%AF%B7%E5%8F%8B%E9%93%BE/</url>
     <content><![CDATA[]]></content>

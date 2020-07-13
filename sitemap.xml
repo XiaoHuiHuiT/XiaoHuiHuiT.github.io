@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://myblog.ddos-sec.cn/2020/07/14/MySQL-%E9%94%81/</loc>
+    
+    <lastmod>2020-07-13T14:47:38.395Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://myblog.ddos-sec.cn/links/index.html</loc>
+    
+    <lastmod>2020-07-11T14:30:19.397Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://myblog.ddos-sec.cn/applyLink/index.html</loc>
     
     <lastmod>2020-07-11T10:33:54.335Z</lastmod>
@@ -19,13 +33,6 @@
     <loc>http://myblog.ddos-sec.cn/2020/07/10/MySQL-%E5%B0%8F%E8%A1%A8%E9%A9%B1%E5%8A%A8%E5%A4%A7%E8%A1%A8/</loc>
     
     <lastmod>2020-07-11T10:28:46.595Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://myblog.ddos-sec.cn/links/index.html</loc>
-    
-    <lastmod>2020-07-11T08:58:07.602Z</lastmod>
     
   </url>
   
