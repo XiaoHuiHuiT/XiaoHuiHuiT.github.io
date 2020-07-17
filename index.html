@@ -219,6 +219,250 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://myblog.ddos-sec.cn/2020/07/17/MySQL-%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jonathan_Yh">
+      <meta itemprop="description" content="Everyday is new .">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="❤️-Leader_TBlog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/17/MySQL-%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90/" class="post-title-link" itemprop="url">MySQL-慢查询日志分析</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-17 13:12:04" itemprop="dateCreated datePublished" datetime="2020-07-17T13:12:04Z">2020-07-17</time>
+            </span>
+
+          
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <meta name="referrer" content="no-referrer">
+
+<h1 id="慢日志查询"><a href="#慢日志查询" class="headerlink" title="慢日志查询"></a>慢日志查询</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>MySQL的慢查询日志是MySQL提供的一种日志记录，它用来记录在MySQL中响应时间超过阀值的语句，具体指运行时间超过 long_query_time 值的SQL，则会被记录到慢查询日志中，ong_query_time 的默认值为 <code>10</code>，意思是运行10S以上的语句。就会被认作是慢查询，默认情况下，Mysql数据库并不启动慢查询日志，需要我们手动来设置这个参数，如果不是调优需要的话，一般不建议启动该参数，因为开启慢查询日志会或多或少带来一定的性能影响。慢查询日志支持将日志记录写入文件，也支持将日志记录写入数据库表。</p>
+<h2 id="查询日志相关参数"><a href="#查询日志相关参数" class="headerlink" title="查询日志相关参数"></a>查询日志相关参数</h2><p>查看是否开启慢查询日志</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW VARIABLES LIKE &#39;%slow_query_log%&#39;</span><br></pre></td></tr></table></figure>
+
+<p>开启</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SET GLOBAL slow_query_log &#x3D; 1;</span><br></pre></td></tr></table></figure>
+
+<p>只对当前数据库生效, 如果重启后, 则会失效，如果永久生效，必须要修改配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">slow_query_log &#x3D; 1</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">slow_query_log_file &#x3D; 地址</span><br></pre></td></tr></table></figure>
+
+<p>那么开启了慢查询日志后，什么样的SQL才会记录到慢查询日志里面呢？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW VARIABLES LIKE &#39;long_query_time&#39;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SET GLOBAL long_query_time &#x3D; 4;</span><br></pre></td></tr></table></figure>
+
+<p>要断开连接后, 才能生效</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW GLOBAL VARIABLES LIKE &#39;long_query_time&#39;;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT sleep(4)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW GLOBAL STATUS LIKE &#39;%slow_queries%&#39;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="慢日志分析工具"><a href="#慢日志分析工具" class="headerlink" title="慢日志分析工具"></a>慢日志分析工具</h2><p>参数</p>
+<blockquote>
+<p>-s：按照那种方式排序<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c：访问计数<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;l：锁定时间<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;r：返回记录<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;al：平均锁定时间<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ar：平均访问记录数<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;at：平均查询时间<br>-t：是top n的意思，返回多少条数据<br>-g：可以跟上正则匹配模式，大小写不敏感</p>
+</blockquote>
+<p>示例</p>
+<p>得到返回记录集最多的10个SQL</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqldumpslow - s r - t 10 &#x2F; DATABASE &#x2F; mysql &#x2F; mysql06_slow.log</span><br></pre></td></tr></table></figure>
+
+<p>得到访问次数最多的10个SQL</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqldumpslow - s c - t 10 &#x2F; DATABASE &#x2F; mysql &#x2F; mysql06_slow.log</span><br></pre></td></tr></table></figure>
+
+<p>得到按照时间排序的前10条里面含有左连接的查询语句</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqldumpslow - s t - t 10 - g “left join” &#x2F; DATABASE &#x2F; mysql &#x2F; mysql06_slow.log</span><br></pre></td></tr></table></figure>
+
+<p>另外建议在使用这些命令时结合 | 和 more 使用，否则有可能出现刷屏的情况</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqldumpslow - s r - t 20 &#x2F; mysqldata &#x2F; mysql &#x2F; mysql06 - slow.log | more</span><br></pre></td></tr></table></figure>
+
+<h1 id="Show-Profile分析"><a href="#Show-Profile分析" class="headerlink" title="Show Profile分析"></a>Show Profile分析</h1><h2 id="概述-1"><a href="#概述-1" class="headerlink" title="概述"></a>概述</h2><p>Show Profile 是mysql提供的可以用来分析当前会话中SQL语句执行的资源消耗情况的工具，可用于SQL调优的测量。默认情况下处于关闭状态，并保存最近15次的运行结果。把一条SQL在mysql当中每一个环节耗费的时候都记录下来，默认该功能是关闭的，使用前需开启。默认保存最近15次运行的结果。</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
+<li>查看当前版本是否支持</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW VARIABLES LIKE &#39;profiling&#39;;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>打开 profile</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SET profiling &#x3D; ON</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>查看结果</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW PROFILES</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>诊断SQL</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SHOW PROFILE cpu,block io FOR QUERY 88;</span><br></pre></td></tr></table></figure>
+
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==" data-original="https://img2020.cnblogs.com/blog/1871532/202007/1871532-20200717135116307-1761306735.png" alt></p>
+<p>当出现以下选项时, 要进行优化</p>
+<ul>
+<li>converting HEAP to MyIsAM，查询结果太大，内存都不够用了，往确磁盘上存在了</li>
+<li>Creating tmp table，创建临时表，copy数据到临时表，用完再进行删除</li>
+<li>Copying to tmp table on disk，把内存中临时表复制到磁盘, <code>危险操作</code></li>
+<li>Locked，被锁定</li>
+</ul>
+<h1 id="全局查询日志"><a href="#全局查询日志" class="headerlink" title="全局查询日志"></a>全局查询日志</h1><p>只允许在测试环境用, 不能在生产环境使用，在测试是可以把所有执行的SQL抓取出来查看</p>
+<h2 id="设置启用"><a href="#设置启用" class="headerlink" title="设置启用"></a>设置启用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SET GLOBAL general_log &#x3D; 1;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SET GLOBAL log_output &#x3D; &#39;TABLE&#39;</span><br></pre></td></tr></table></figure>
+
+<p>此后所编写的SQL语句将会记录到mysql库里的 general_log 表中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT * FROM mysql.general_log;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql - u root - p1234 -- DEFAULT - CHARACTER -SET &#x3D; utf8</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://myblog.ddos-sec.cn/2020/07/15/MySQL-%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="Jonathan_Yh">
+      <meta itemprop="description" content="Everyday is new .">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="❤️-Leader_TBlog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/15/MySQL-%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" class="post-title-link" itemprop="url">MySQL-主从复制</a>
+        </h2>
+
+        <div class="post-meta">
+		  
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-14 21:03:17" itemprop="dateCreated datePublished" datetime="2020-07-14T21:03:17Z">2020-07-14</time>
+            </span>
+
+          
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <meta name="referrer" content="no-referrer">
+
+<h1 id="什么是主从复制"><a href="#什么是主从复制" class="headerlink" title="什么是主从复制"></a>什么是主从复制</h1><p>传统数据库中存在的问题</p>
+<ol>
+<li>传统数据库设计时，如果服务器宕机，将不能为用户提供服务导致整个系统崩溃</li>
+<li>如果数据库突然宕机，会导致数据丢失</li>
+<li>为了防止数据丢失，要进行实时备份</li>
+</ol>
+<p>冷备份：通过数据库工具进行人为的导出 SQL，但是手动导出数据可能在中间节点宕机时也会造成数据库的丢失</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/07/15/MySQL-%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://myblog.ddos-sec.cn/2020/07/14/MySQL-%E9%94%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -457,172 +701,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://myblog.ddos-sec.cn/2020/07/09/MySQL-%E7%B4%A2%E5%BC%95%E7%9B%B8%E5%85%B3%E9%9D%A2%E8%AF%95%E9%A2%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Jonathan_Yh">
-      <meta itemprop="description" content="Everyday is new .">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="❤️-Leader_TBlog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/09/MySQL-%E7%B4%A2%E5%BC%95%E7%9B%B8%E5%85%B3%E9%9D%A2%E8%AF%95%E9%A2%98/" class="post-title-link" itemprop="url">MySQL-索引相关面试题</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-07-09 10:45:59" itemprop="dateCreated datePublished" datetime="2020-07-09T10:45:59Z">2020-07-09</time>
-            </span>
-
-          
-  
-  <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <meta name="referrer" content="no-referrer">
-
-<h1 id="说出以下语法使用索引的情况"><a href="#说出以下语法使用索引的情况" class="headerlink" title="说出以下语法使用索引的情况"></a>说出以下语法使用索引的情况</h1><p>假设建立复合索引 (a、b、c)，请说出以下条件是否使用到了索引及使用情况</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/07/09/MySQL-%E7%B4%A2%E5%BC%95%E7%9B%B8%E5%85%B3%E9%9D%A2%E8%AF%95%E9%A2%98/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://myblog.ddos-sec.cn/2020/07/09/MySQL-%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%88%86%E7%BB%84%E4%BC%98%E5%8C%96/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="Jonathan_Yh">
-      <meta itemprop="description" content="Everyday is new .">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="❤️-Leader_TBlog">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/09/MySQL-%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%88%86%E7%BB%84%E4%BC%98%E5%8C%96/" class="post-title-link" itemprop="url">MySQL-排序与分组优化</a>
-        </h2>
-
-        <div class="post-meta">
-		  
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-07-09 10:13:42" itemprop="dateCreated datePublished" datetime="2020-07-09T10:13:42Z">2020-07-09</time>
-            </span>
-
-          
-  
-  <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>230</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <meta name="referrer" content="no-referrer">
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/07/09/MySQL-%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%88%86%E7%BB%84%E4%BC%98%E5%8C%96/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -695,7 +773,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-count">113</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -768,13 +846,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">129k</span>
+    <span title="站点总字数">133k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:57</span>
+    <span title="站点阅读时长">2:01</span>
 </div>
   <div class="powered-by">埋骨何须桑梓地  ❤️人生无处不青山
   </div>

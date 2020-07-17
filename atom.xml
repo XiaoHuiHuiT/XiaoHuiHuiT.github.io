@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://myblog.ddos-sec.cn/"/>
-  <updated>2020-07-13T14:47:38.395Z</updated>
+  <updated>2020-07-17T05:56:14.349Z</updated>
   <id>http://myblog.ddos-sec.cn/</id>
   
   <author>
@@ -15,6 +15,60 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MySQL-慢查询日志分析</title>
+    <link href="http://myblog.ddos-sec.cn/2020/07/17/MySQL-%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90/"/>
+    <id>http://myblog.ddos-sec.cn/2020/07/17/MySQL-%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%97%A5%E5%BF%97%E5%88%86%E6%9E%90/</id>
+    <published>2020-07-17T13:12:04.000Z</published>
+    <updated>2020-07-17T05:56:14.349Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+
+&lt;h1 id=&quot;慢日志查询&quot;&gt;&lt;a href=&quot;#慢日志查询&quot; class=&quot;headerlink&quot; title=&quot;慢日志查询&quot;&gt;&lt;/a&gt;慢日志查询&lt;/h1&gt;&lt;h2 id=&quot;概述&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+    
+    
+      <category term="MySQL" scheme="http://myblog.ddos-sec.cn/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL-主从复制</title>
+    <link href="http://myblog.ddos-sec.cn/2020/07/15/MySQL-%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/"/>
+    <id>http://myblog.ddos-sec.cn/2020/07/15/MySQL-%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/</id>
+    <published>2020-07-14T21:03:17.000Z</published>
+    <updated>2020-07-17T05:09:29.916Z</updated>
+    
+    <summary type="html">
+    
+      &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+
+&lt;h1 id=&quot;什么是主从复制&quot;&gt;&lt;a href=&quot;#什么是主从复制&quot; class=&quot;headerlink&quot; title=&quot;什么是主从复制&quot;&gt;&lt;/a&gt;什么是主从复制&lt;/h1&gt;&lt;p&gt;传统数据库中存在的问题&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;传统数据库设计时，如果服务器宕机，将不能为用户提供服务导致整个系统崩溃&lt;/li&gt;
+&lt;li&gt;如果数据库突然宕机，会导致数据丢失&lt;/li&gt;
+&lt;li&gt;为了防止数据丢失，要进行实时备份&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;冷备份：通过数据库工具进行人为的导出 SQL，但是手动导出数据可能在中间节点宕机时也会造成数据库的丢失&lt;/p&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="MySQL" scheme="http://myblog.ddos-sec.cn/tags/MySQL/"/>
+    
+  </entry>
   
   <entry>
     <title>MySQL-锁</title>
@@ -99,11 +153,13 @@
     <link href="http://myblog.ddos-sec.cn/2020/07/09/MySQL-%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%88%86%E7%BB%84%E4%BC%98%E5%8C%96/"/>
     <id>http://myblog.ddos-sec.cn/2020/07/09/MySQL-%E6%8E%92%E5%BA%8F%E4%B8%8E%E5%88%86%E7%BB%84%E4%BC%98%E5%8C%96/</id>
     <published>2020-07-09T10:13:42.000Z</published>
-    <updated>2020-07-11T10:29:16.088Z</updated>
+    <updated>2020-07-17T05:13:31.701Z</updated>
     
     <summary type="html">
     
       &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+
+&lt;h1 id=&quot;在使用-order-by-时，经常出现-Using-filesort&quot;&gt;&lt;a href=&quot;#在使用-order-by-时，经常出现-Using-filesort&quot; class=&quot;headerlink&quot; title=&quot;在使用 order by 时，经常出现 Using filesort&quot;&gt;&lt;/a&gt;在使用 order by 时，经常出现 Using filesort&lt;/h1&gt;&lt;h2 id=&quot;索引做为排序时&quot;&gt;&lt;a href=&quot;#索引做为排序时&quot; class=&quot;headerlink&quot; title=&quot;索引做为排序时&quot;&gt;&lt;/a&gt;索引做为排序时&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAAEsCAMAAABOo35HAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAC9UExURVlZWdPT07KysmRkZIWFhfT09JmZmWZmZm9vb39/fxkZGUxMTDMzM3p6epCQkKamppubm729venp6cjIyN7e3tbW1s/Pz8LCwnx8fLS0tFZWVoiIiI+Pj6GhoeTk5Glpabu7u93d3evr66CgoJSUlKqqqsnJyeDg4Hd3d8PDw+Xl5bi4uNHR0dvb26Ojo6urq+fn51hYWDg4OCgoKHBwcK2traenp0FBQe7u7vHx8U5OTre3t8zMzHV1df///7GrnpQAAAA/dFJOU///////////////////////////////////////////////////////////////////////////////////AI4mfBcAAAUGSURBVHja7NoJb6M4GMZxY0NCD64kve/pMZ2d3Z297+X7f6zFNmBAMUXa6URl/q9UJSWPUPzrizFWRUlNLgEBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYYIEFAVhggQUWWGBBABZYYIEFFlgQgAUWWGCBBRYEYIEFFlhggQUBWGCBBRZYYEEAFlhggQUWWBCABRZYYIEFFgRggQUWWGCBBQFYYIEFFlhgQQAWWGCBBRZYEIAFFlhggQUWBGCBBRZYn6cCIcRXgvX/h9qcIVBqDdbEM8RCxGCB9QqXYRwHYDHBgwXWl8eKZKiESHI3Ba1kWs3fKixcaJUl1YyeBm7Ocq+yLItUiVBGnXxenSHJolIKEcwHq6ikbOX1YGVzQCTN8LPmSLreghUl9sN4Uw7yajMrLC0TZ1ImzqY6FEop0+pIaEN5HaoOxVuwEqFyc4I46uSlzOLqgxlh6UaR9l3VYWl9Fdoxb1Q90KJtu41pwwFW/WHhTtW8i7TafLCqRsk6bsGw63L9qurXRmuIlbT9lDQnlXU+nBFW1Q2qnZbDprWa2tjR90LZFqx1/+Td/HpGWLlrLDvIwTcx6dQ1Vrntbig68cDms3JwbA5Y1azs1ger6sNV/bbIw1jU81MvNAGrl58RVn8ozW+btF08iGFoAlYvP3csfVur1gJBEIA1uBmue5dhZDOyO2epbmgCVi8/I6x0MMHH9pjsTfBhNzQBq5uPZoQlB0uH3DZG4EZqQ26fL3sZq5uf09Ih6qw3i/pm6BZO0qZX7rrUS68Xsbr5ZE4rePMk08pk9aUZugfqppvs6AM1Acvlo/StP+6EbW06z8hJqxbYp2BZPQUnFsLsKuhQdaHqn5ewbF7KXIn0jWO5MqOQ7RaNLPtbNMmmhimj0GUmYLl8Gs0Lq4wyPbTu1l2QKqHSouzs3OlDIslW5SQsnY/NXmFplyNvEuuLV/Tau9BzwiraDUSwXmysztYWWNtL1psXeumgIrDGaqXvBfUuvtqUYI3V2t1wk1e2msFluJJm6zDJXv/fIfjPP7DAAgsssCiwwAILLLDAosACCyywwAKLAgsssMACC6zt9fDz/v75tyOB+98PD2+ORgKffjw4OP1uJPDxl+Xy8v1I4MPF3t7VNyOB4/vF4uzdzrG+39f1kz/w66Guv/yBvw90KX/gZKkr8Qf+2dOV+gNHC12/7RxrabD2/a31bLAO/a11YbAO/K21MFhLf2s9Gqw9f2vdGqzFu11jnVusE2/gxmI9eQOnFuvYG7i0WH7uK4t15w2cWazrXWP9a7H8f/bQYvm/6IPF+sF/pVssf19Ii/WH/0K2WH/uGuvEWC39gSdj9Twy+Rqri5EZx1gt/IE7Y/XoD1wbq9vd3w1PlufnD2OBp+ebm/uxwPHF6emnscDR4vLy41jg7vHq6sNY4Pr27OyYdRaLUrDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssMCiwAILLLDAAosCCyywwAILLAossMACCyywKLDAAgsssL6u+k+AAQCR9eHtLKvLfwAAAABJRU5ErkJggg==&quot; data-original=&quot;https://img2020.cnblogs.com/blog/1871532/202007/1871532-20200709101531316-108458163.png&quot; alt&gt;&lt;/p&gt;
     
     </summary>
     
@@ -382,44 +438,6 @@
     
     
       <category term="Hibernate" scheme="http://myblog.ddos-sec.cn/categories/Hibernate/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>多线程</title>
-    <link href="http://myblog.ddos-sec.cn/2020/06/30/%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
-    <id>http://myblog.ddos-sec.cn/2020/06/30/%E5%A4%9A%E7%BA%BF%E7%A8%8B/</id>
-    <published>2020-06-30T09:58:47.000Z</published>
-    <updated>2020-07-01T00:11:20.101Z</updated>
-    
-    <summary type="html">
-    
-      &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
-    
-    </summary>
-    
-    
-      <category term="Java核心语法-IO流与多线程" scheme="http://myblog.ddos-sec.cn/categories/Java%E6%A0%B8%E5%BF%83%E8%AF%AD%E6%B3%95-IO%E6%B5%81%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>打印流</title>
-    <link href="http://myblog.ddos-sec.cn/2020/06/30/%E6%89%93%E5%8D%B0%E6%B5%81/"/>
-    <id>http://myblog.ddos-sec.cn/2020/06/30/%E6%89%93%E5%8D%B0%E6%B5%81/</id>
-    <published>2020-06-30T09:45:17.000Z</published>
-    <updated>2020-06-30T01:55:22.591Z</updated>
-    
-    <summary type="html">
-    
-      &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
-    
-    </summary>
-    
-    
-      <category term="Java核心语法-IO流与多线程" scheme="http://myblog.ddos-sec.cn/categories/Java%E6%A0%B8%E5%BF%83%E8%AF%AD%E6%B3%95-IO%E6%B5%81%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/"/>
     
     
   </entry>
