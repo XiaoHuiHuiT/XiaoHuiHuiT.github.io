@@ -15,7 +15,7 @@
     <atom:link href="/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>Everyday is new .</description>
-    <pubDate>Fri, 17 Jul 2020 05:56:14 GMT</pubDate>
+    <pubDate>Fri, 17 Jul 2020 10:43:35 GMT</pubDate>
     <generator>http://hexo.io/</generator>
     
     <item>
@@ -25,15 +25,9 @@
       <pubDate>Fri, 17 Jul 2020 13:12:04 GMT</pubDate>
       <description>
       
-        
-        
-          
-          
-            &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+        &lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
 
-&lt;h1 id=&quot;慢日志查询&quot;&gt;&lt;a href=&quot;#慢日志查询&quot; class=&quot;headerlink&quot; title=&quot;慢日志查询&quot;&gt;&lt;/a&gt;慢日志查询&lt;/h1&gt;&lt;h2 id=&quot;概述&quot;&gt;&lt;a
-          
-        
+&lt;h1 id=&quot;慢日志查询&quot;&gt;&lt;a href=&quot;#慢日志查询&quot; class=&quot;headerlink&quot; title=&quot;慢日志查询&quot;&gt;&lt;/a&gt;慢日志查询&lt;/h1&gt;&lt;h2 id=&quot;概述&quot;&gt;&lt;a href=&quot;#概述&quot; class=&quot;headerlink&quot; title=&quot;概述&quot;&gt;&lt;/a&gt;概述&lt;/h2&gt;&lt;p&gt;MySQL的慢查询日志是MySQL提供的一种日志记录，它用来记录在MySQL中响应时间超过阀值的语句，具体指运行时间超过 long_query_time 值的SQL，则会被记录到慢查询日志中，ong_query_time 的默认值为 &lt;code&gt;10&lt;/code&gt;，意思是运行10S以上的语句。就会被认作是慢查询，默认情况下，Mysql数据库并不启动慢查询日志，需要我们手动来设置这个参数，如果不是调优需要的话，一般不建议启动该参数，因为开启慢查询日志会或多或少带来一定的性能影响。慢查询日志支持将日志记录写入文件，也支持将日志记录写入数据库表。&lt;/p&gt;
       
       </description>
       

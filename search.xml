@@ -6,6 +6,8 @@
     <content><![CDATA[<meta name="referrer" content="no-referrer">
 
 <h1 id="慢日志查询"><a href="#慢日志查询" class="headerlink" title="慢日志查询"></a>慢日志查询</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>MySQL的慢查询日志是MySQL提供的一种日志记录，它用来记录在MySQL中响应时间超过阀值的语句，具体指运行时间超过 long_query_time 值的SQL，则会被记录到慢查询日志中，ong_query_time 的默认值为 <code>10</code>，意思是运行10S以上的语句。就会被认作是慢查询，默认情况下，Mysql数据库并不启动慢查询日志，需要我们手动来设置这个参数，如果不是调优需要的话，一般不建议启动该参数，因为开启慢查询日志会或多或少带来一定的性能影响。慢查询日志支持将日志记录写入文件，也支持将日志记录写入数据库表。</p>
+<a id="more"></a>
+
 <h2 id="查询日志相关参数"><a href="#查询日志相关参数" class="headerlink" title="查询日志相关参数"></a>查询日志相关参数</h2><p>查看是否开启慢查询日志</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SHOW VARIABLES LIKE &#39;%slow_query_log%&#39;</span><br></pre></td></tr></table></figure>
 
